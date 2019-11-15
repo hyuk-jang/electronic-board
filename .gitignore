@@ -13,3 +13,4 @@ package-lock.json
 # ignore-file*
 *.log
 ~$*.*
+.env

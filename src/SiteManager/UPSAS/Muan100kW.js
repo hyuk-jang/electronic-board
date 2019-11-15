@@ -78,7 +78,7 @@ class Muan100kW extends SiteManager {
     const { co2, cumulativePower, currKw, solar, temp } = boardData;
 
     // 실제 뿌려질 데이터 형식을 정의 (형식에 맞지 않는 데이터일 경우 소수점 강제 부여)
-    const ebViewLength = 6;
+    const ebViewLength = 4;
     // 현황판 데이터 목록
     const ebViewList = [
       _.padStart(this.convertFixedData(currKw, 1), ebViewLength, ' '),
@@ -109,14 +109,14 @@ class Muan100kW extends SiteManager {
     // 01: 12(pixel), 02: 12, 03: 16, 04: 20, ...
     const bufCharSize = Buffer.from('03', 'hex');
     // 00: , 06: 이동하기-왼쪽
-    const bufEntranceEffect = Buffer.from('00', 'hex');
+    const bufEntranceEffect = Buffer.from('01', 'hex');
     const bufExitEffect = Buffer.from('00', 'hex');
     // 00: 사용하지 않음
     const bufSubEffect = Buffer.from('00', 'hex');
     // 입장/퇴장 효과를 위한 상대적인 속도로, 수치가 작을수록 속도가 빠릅니다
-    const bufEffectSpeed = Buffer.from('32', 'hex');
+    const bufEffectSpeed = Buffer.from('00', 'hex');
     // 효과를 구현한 후의 유지시간 설정 코드 (헥삭밧 x 0.5초)
-    const bufEffectMaintain = Buffer.from('04', 'hex');
+    const bufEffectMaintain = Buffer.from('00', 'hex');
     // 화면 분할 시 각 섹션(00/01/02)의 시작/종료 좌표값 (4 픽셀 단위로 설정)
     const bufStartX = Buffer.from('00', 'hex');
     const bufStartY = Buffer.from('00', 'hex');

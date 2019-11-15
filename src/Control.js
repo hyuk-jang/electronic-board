@@ -68,6 +68,7 @@ class Control {
       const boardData = await this.siteManager.getRefinedBoardData();
 
       // console.dir(boardData);
+      // BU.log(boardData);
       // BU.CLI(boardData.length);
       if (_.isArray(boardData)) {
         boardData.forEach((data, index) => {
