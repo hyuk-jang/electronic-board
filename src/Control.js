@@ -15,7 +15,7 @@ class Control {
    */
   constructor(ebBoardConfig = config) {
     this.config = ebBoardConfig;
-    this.siteManager = new SiteManager(ebBoardConfig);
+    this.siteManager = SiteManager.getSiteManager(ebBoardConfig);
 
     this.deviceManager = new DeviceManager();
   }
@@ -42,7 +42,7 @@ class Control {
         // BU.CLI('Stop')
         this.cronScheduler.stop();
       }
-      // BU.CLI(this.config.inquiryIntervalSecond)
+      BU.CLI(this.config.inquirySchedulerInfo);
       // 1분마다 요청
       this.cronScheduler = new cron.CronJob(
         this.config.inquirySchedulerInfo.intervalCronFormat,

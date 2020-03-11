@@ -31,7 +31,7 @@ const config = {
     target_id: 0,
     connect_info: {
       type: 'serial',
-      port: 'COM7',
+      port: 'COM1',
       baudRate: 9600,
     },
   },

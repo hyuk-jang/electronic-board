@@ -17,6 +17,8 @@ class Muan100kW extends SiteManager {
   constructor(ebBoardConfig) {
     super(ebBoardConfig);
 
+    BU.debugConsole(10);
+
     this.biModule = new BiModule(this.dbInfo);
     this.refineModel = new RefineModel(this.dbInfo);
     this.weatherModel = new WeatherModel(this.dbInfo);

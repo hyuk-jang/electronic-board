@@ -1,13 +1,12 @@
-const SiteManager = require('./SiteManager');
+// const SiteManager = require('./SiteManager');
 
-module.exports = class {
+module.exports = {
   /**
    * @param {ebBoardConfig} ebBoardConfig
    */
-  constructor(ebBoardConfig) {
+  getSiteManager(ebBoardConfig) {
     const {
       projectInfo: { projectMainId, projectSubId },
-      dbInfo,
     } = ebBoardConfig;
 
     const Site = require(`./${projectMainId}/${projectSubId}`);
@@ -16,5 +15,5 @@ module.exports = class {
     const siteManager = new Site(ebBoardConfig);
 
     return siteManager;
-  }
+  },
 };
