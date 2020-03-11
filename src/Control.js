@@ -37,27 +37,22 @@ class Control {
    */
   runCronRequestElecBoard() {
     this.processBoardView().catch(console.error);
-    try {
-      if (!_.isNil(this.cronScheduler)) {
-        // BU.CLI('Stop')
-        this.cronScheduler.stop();
-      }
-      BU.CLI(this.config.inquirySchedulerInfo);
-      // 1분마다 요청
-      this.cronScheduler = new cron.CronJob(
-        this.config.inquirySchedulerInfo.intervalCronFormat,
-        () => {
-          this.inquirySchedulerRunMoment = moment();
-          this.processBoardView().catch(console.error);
-        },
-        null,
-        true,
-      );
-
-      return true;
-    } catch (error) {
-      throw error;
+    if (!_.isNil(this.cronScheduler)) {
+      // BU.CLI('Stop')
+      this.cronScheduler.stop();
     }
+    // 1분마다 요청
+    // this.cronScheduler = new cron.CronJob(
+    //   this.config.inquirySchedulerInfo.intervalCronFormat,
+    //   () => {
+    //     this.inquirySchedulerRunMoment = moment();
+    //     this.processBoardView().catch(console.error);
+    //   },
+    //   null,
+    //   true,
+    // );
+
+    return true;
   }
 
   /**
