@@ -1,7 +1,5 @@
 const _ = require('lodash');
 
-const { BU } = require('base-util-jh');
-
 const ProtocolConverter = require('../utils/ProtocolConverter');
 
 class SiteManager {
@@ -16,7 +14,6 @@ class SiteManager {
     this.ebBoardConfig = ebBoardConfig;
 
     this.protocolConverter = new ProtocolConverter();
-    // BU.CLIN(this.protocolConverter);
   }
 
   /**
@@ -50,14 +47,14 @@ class SiteManager {
    * @return {string}
    */
   convertFixedData(data, fixed = 1, scale = 1) {
-    const strData = _.round(data, scale).toString();
+    const strData = _.round(data * scale, fixed).toString();
 
     let strAddData = '';
 
     if (strData.includes('.')) {
       const padFixedLen = strData.length - strData.indexOf('.') - 1;
       strAddData = _.padEnd(strAddData, fixed - padFixedLen, '0');
-    } else if (strData !== '0') {
+    } else if (strData !== '0' && fixed > 0) {
       strAddData = `.${_.padEnd(strAddData, fixed, '0')}`;
     }
     return strData + strAddData;

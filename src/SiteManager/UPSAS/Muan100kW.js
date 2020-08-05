@@ -1,7 +1,6 @@
 const _ = require('lodash');
 
 const { BU } = require('base-util-jh');
-const { BM } = require('base-model-jh');
 
 const SiteManager = require('../SiteManager');
 
@@ -22,8 +21,6 @@ class Muan100kW extends SiteManager {
     this.weatherModel = new WeatherModel(this.dbInfo);
 
     this.siteNumber = null;
-
-    // this.setSiteNumber();
 
     _.once(this.setSiteNumber);
   }
@@ -47,7 +44,6 @@ class Muan100kW extends SiteManager {
   async getBoardData() {
     await this.setSiteNumber();
 
-    // BU.CLI('refineGeneralPowerInfo');
     const { powerGenerationInfo } = await this.refineModel.refineGeneralPowerInfo(this.siteNumber);
 
     /** @type {WEATHER_DEVICE_DATA} */
@@ -73,8 +69,7 @@ class Muan100kW extends SiteManager {
    * @param {number} boardData.co2
    */
   encodingBoardData(boardData) {
-    BU.CLI(boardData);
-    // BU.CLIN(this);
+    BU.log(boardData);
     const { co2, cumulativePower, currKw, solar, temp } = boardData;
 
     // 실제 뿌려질 데이터 형식을 정의 (형식에 맞지 않는 데이터일 경우 소수점 강제 부여)
@@ -82,15 +77,13 @@ class Muan100kW extends SiteManager {
     // 현황판 데이터 목록
     const ebViewList = [
       _.padStart(this.convertFixedData(currKw, 1), ebViewLength, ' '),
-      _.padStart(this.convertFixedData(cumulativePower, 1), ebViewLength, ' '),
+      _.padStart(this.convertFixedData(cumulativePower, 0), ebViewLength, ' '),
       _.padStart(solar, ebViewLength, ' '),
       _.padStart(this.convertFixedData(temp, 1), ebViewLength, ' '),
       _.padStart(this.convertFixedData(co2, 1), ebViewLength, ' '),
     ];
 
-    // BU.CLI(ebViewList);
-
-    // BU.CLI(this.ebBoardConfig);
+    BU.log(ebViewList);
     const STX = Buffer.from('1002', 'hex');
     const ETX = Buffer.from('1003', 'hex');
     const DST = Buffer.alloc(1, this.ebBoardConfig.deviceInfo.target_id);
@@ -147,7 +140,6 @@ class Muan100kW extends SiteManager {
       bufBG,
     ]);
 
-    // BU.CLI(ebViewList);
     const encodingBoardBodyBuffer = _.reduce(
       ebViewList,
       (prev, strData) => {
@@ -165,15 +157,13 @@ class Muan100kW extends SiteManager {
       },
       { colorBuffer: Buffer.alloc(0), charBuffer: Buffer.alloc(0) },
     );
-    // BU.CLI(encodingBoardBodyBuffer);
 
     // 프로토콜에 맞는 패킷 Length 정의(sum[명령 길이(1), 표시속성길이(16), 문자색상(동적), 표시문자(동적)])
     const charBufferLength = _(encodingBoardBodyBuffer)
       .map(encodingBuffer => encodingBuffer.length)
       .sum();
-    // BU.CLI(charBufferLength);
+
     const LEN = this.protocolConverter.convertNumToHxToBuf(_.sum([1, 16, charBufferLength]), 2);
-    // BU.CLIS(STX, DST, LEN, CMD, bufferHeader);
 
     // 최종 인코딩 Buffer 정의
     return Buffer.concat([

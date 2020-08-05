@@ -26,7 +26,6 @@ class Control {
    */
   async init() {
     // 전광판과 접속이 완료될때까지 대기
-    // BU.CLI(this.config.deviceInfo);
     await this.deviceManager.connect(this.config.deviceInfo);
 
     this.runCronRequestElecBoard();
@@ -39,10 +38,8 @@ class Control {
     this.processBoardView().catch(console.error);
     try {
       if (!_.isNil(this.cronScheduler)) {
-        // BU.CLI('Stop')
         this.cronScheduler.stop();
       }
-      // BU.CLI(this.config.inquiryIntervalSecond)
       // 1분마다 요청
       this.cronScheduler = new cron.CronJob(
         this.config.inquirySchedulerInfo.intervalCronFormat,
@@ -67,9 +64,6 @@ class Control {
     try {
       const boardData = await this.siteManager.getRefinedBoardData();
 
-      // console.dir(boardData);
-      // BU.log(boardData);
-      // BU.CLI(boardData.length);
       if (_.isArray(boardData)) {
         boardData.forEach((data, index) => {
           setTimeout(() => {

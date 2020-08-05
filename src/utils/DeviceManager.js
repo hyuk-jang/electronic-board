@@ -28,7 +28,6 @@ class DeviceManager extends EventEmitter {
   async connect(deviceInfo = {}) {
     this.deviceInfo = deviceInfo;
 
-    // BU.CLI('connect', this.deviceInfo);
     // 모델 선언
     try {
       const dccFacade = new DccFacade();
@@ -63,7 +62,6 @@ class DeviceManager extends EventEmitter {
    * @param {string} eventName 'dcConnect' 연결, 'dcClose' 닫힘, 'dcError' 에러
    */
   onEvent(eventName) {
-    // BU.CLI(eventName);
     const { CONNECT, DISCONNECT } = this.definedControlEvent;
 
     switch (eventName) {
@@ -84,10 +82,7 @@ class DeviceManager extends EventEmitter {
    * @param {buffer} bufData 현재 장비에서 실행되고 있는 명령 객체
    */
   onData(bufData) {
-    BU.CLI(bufData.toString());
-    // const resultData = this.model.onData(bufData);
-
-    // BU.CLI(this.getDeviceOperationInfo().data);
+    // BU.CLI(bufData.toString());
   }
 
   /**
